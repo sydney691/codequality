@@ -1,6 +1,8 @@
 package com.codequality.sample.sydneyzamoranos.todo.controller;
 
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +20,11 @@ import com.codequality.sample.sydneyzamoranos.todo.service.TodoService;
 @RequestMapping("/todo")
 public class TaskCreatorController {
   
+  private final static Logger LOGGER = LoggerFactory.getLogger(TaskCreatorController.class);
+  
   @Autowired
   private TodoService todoService;
+  
   
   @GetMapping("/tasks")
   public ResponseEntity<List<TaskEntity>> listTasks() {
@@ -28,6 +33,8 @@ public class TaskCreatorController {
       
       return ResponseEntity.ok(todoService.getTasks());
     }catch(Exception e) {
+      LOGGER.error(ConstantMessageResponse.RETRIEVING_FAILED,e);
+      
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
     
@@ -42,13 +49,15 @@ public class TaskCreatorController {
       
       return ResponseEntity.ok(ConstantMessageResponse.CREATION_SUCCESS);
     } catch (Exception e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                             .body(ConstantMessageResponse.CREATION_FAILED);
+      LOGGER.error(ConstantMessageResponse.CREATION_FAILED, e);
+
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+          .body(ConstantMessageResponse.CREATION_FAILED);
     }
    
   }
   
-  @PutMapping("/task/{id}")
+  @PutMapping("/task")
   public ResponseEntity<String> updateTask(TaskPojo todoTask) {
     
     try {
@@ -57,8 +66,10 @@ public class TaskCreatorController {
       
       return ResponseEntity.ok(ConstantMessageResponse.UPDATING_SUCCESS);
     } catch (Exception e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                            .body(ConstantMessageResponse.UPDATING_FAILED);
+      LOGGER.error(ConstantMessageResponse.UPDATING_FAILED, e);
+
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+          .body(ConstantMessageResponse.UPDATING_FAILED);
     }
    
   }
@@ -71,8 +82,10 @@ public class TaskCreatorController {
       
       return ResponseEntity.ok(ConstantMessageResponse.DELETING_SUCCESS);
     } catch (Exception e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                             .body(ConstantMessageResponse.DELETING_FAILED);
+      LOGGER.error(ConstantMessageResponse.DELETING_FAILED, e);
+      
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+          .body(ConstantMessageResponse.DELETING_FAILED);
     }
    
   }
