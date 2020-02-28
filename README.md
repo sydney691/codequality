@@ -1,0 +1,2 @@
+# codequality
+Code quality sample
