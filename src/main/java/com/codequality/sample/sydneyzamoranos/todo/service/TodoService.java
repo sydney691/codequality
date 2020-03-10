@@ -35,6 +35,7 @@ public class TodoService {
                       .builder()
                       .name(todoTask.getName())
                       .description(todoTask.getDescription())
+                      .isDone(todoTask.isDone())
                       .build();
     
     return task;
