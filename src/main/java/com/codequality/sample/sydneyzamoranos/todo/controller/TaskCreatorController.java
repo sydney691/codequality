@@ -30,7 +30,6 @@ public class TaskCreatorController {
   public ResponseEntity<List<TaskEntity>> listTasks() {
     
     try {
-      
       return ResponseEntity.ok(todoService.getTasks());
     }catch(Exception e) {
       LOGGER.error(ConstantMessageResponse.RETRIEVING_FAILED,e);
@@ -40,7 +39,7 @@ public class TaskCreatorController {
     
   }
   
-  @PostMapping("/task")
+  @PostMapping("/tasks")
   public ResponseEntity<String> createTask(TaskPojo todoTask) {
     
     try {
@@ -57,14 +56,14 @@ public class TaskCreatorController {
    
   }
   
-  @PutMapping("/task")
-  public ResponseEntity<String> updateTask(TaskPojo todoTask) {
+  @PutMapping("/tasks")
+  public ResponseEntity<?> updateTask(TaskPojo todoTask) {
     
     try {
       TaskEntity task = todoService.transformToEntity(todoTask);
-      todoService.saveOrUpdateTask(task);
+      TaskEntity taskEntity = todoService.saveOrUpdateTask(task);
       
-      return ResponseEntity.ok(ConstantMessageResponse.UPDATING_SUCCESS);
+      return ResponseEntity.ok(taskEntity);
     } catch (Exception e) {
       LOGGER.error(ConstantMessageResponse.UPDATING_FAILED, e);
 
@@ -74,7 +73,7 @@ public class TaskCreatorController {
    
   }
   
-  @GetMapping("/task/{id}")
+  @PostMapping("/tasks/{id}")
   public ResponseEntity<String> deleteTask(int id) {
     
     try {

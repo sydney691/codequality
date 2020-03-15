@@ -17,8 +17,8 @@ public class TodoService {
     return taskRepository.findAll();
   }
   
-  public void saveOrUpdateTask(TaskEntity taskEntity) {
-    taskRepository.save(taskEntity);
+  public TaskEntity saveOrUpdateTask(TaskEntity taskEntity) {
+    return taskRepository.save(taskEntity);
   }
   
   public void deleteTask(int id) {
